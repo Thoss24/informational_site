@@ -2,12 +2,6 @@ const http = require("node:http");
 const url = require("url")
 const fs = require("fs");
 
-const page404 = fs.readFileSync("./project/404.html", "utf-8", (err, data) => {
-    if (err) {
-        throw err
-    } return data
-})
-
 http.createServer((req, res) => {
    const q = url.parse(req.url, true);
    
@@ -15,7 +9,7 @@ http.createServer((req, res) => {
    if (q.pathname === "/") {
     filename = "." + "/project/index.html";
    } else {
-    filename = "." + "/project" + q.pathname
+    filename = "." + "/project" + q.pathname + ".html"
     console.log(q.pathname)
    }
 
