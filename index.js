@@ -1,36 +1,24 @@
 const http = require("node:http");
 const express = require('express');
 const app = express();
-const url = require("url")
-const fs = require("fs");
-const router = express.Router();
-const route1 = require("./project/route1/route1");
+const route0 = require("./project/routes/route0/route0");
+const route1 = require("./project/routes/route1/route1");
 
-app.use(express.static("./project"));
+app.use(express.static("project/public"));
+app.use(express.urlencoded({ extended: true }))
 
 const port = 8080;
 
-// const page404 = fs.readFileSync('project/404.html', 'utf8', (err, data) => {
-//     return err ? err : data
-// });
+app.use("/", route0);
 
-const middlewareTest = (req, res, next) => {
-    res.sendFile("/home/thomas/repos/informational-site/informational_site/project/about.html");
-    console.log("Middleware working!")
-};
-
-app.use("/route1", route1)
-
-app.get("/contact", (req, res) => {
-    res.sendFile("/home/thomas/repos/informational-site/informational_site/project/contact-me.html")
-});
-
-app.get("/about", middlewareTest);
-
-app.get("/", (req, res) => {
-    res.sendFile("/home/thomas/repos/informational-site/informational_site/project/index.html");
-});
+app.use("/route1", route1);
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 });
+
+const notFoundHandler = (req, res, next) => {
+    res.status(404).sendFile("/home/thomas/repos/informational-site/informational_site/project/routes/route0/404.html")
+};
+
+app.use(notFoundHandler);
