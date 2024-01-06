@@ -19,12 +19,23 @@ router.get("/new", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-    console.log(req.body.firstName)
-    res.send(req.body.firstName)
+    let user = users.findIndex((item) => item.firstName === req.body.firstName);
+    let userExists = users[user]
+    let id = users.length - 1;
+    if (!userExists) {
+        users.push({ firstName: req.body.firstName })
+        res.redirect(`/route1/${id}`)
+    } else {
+        console.log("Error")
+        res.sendFile("/home/thomas/repos/informational-site/informational_site/project/routes/route1/new.html");
+    }
 });
+
+let users = [ {firstName: "Hannah"} ];
 
 router.get("/:id", (req, res) => {
     res.send(`Get User With ID ${req.params.id}`)
+    console.log(req.body)
 });
 
 module.exports = router;
